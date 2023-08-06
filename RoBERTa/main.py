@@ -21,7 +21,7 @@ test = sys.argv[2]
 output = sys.argv[3]
 dataset_name = sys.argv[4]
 # initialize roberta model
-cur_model = (RobertaForSequenceClassification, RobertaTokenizer, 'roberta-base')
+cur_model = (RobertaForSequenceClassification, RobertaTokenizer, './roberta-base')
 m_name = "Roberta"
 # CHANGE ME
 dataset = "stackoverflow"
