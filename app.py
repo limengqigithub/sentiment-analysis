@@ -36,8 +36,12 @@ def train():
                 os.system('python ./RoBERTa/main.py ./data/{}/train.csv ./data/{}/test.csv ./output/{}/{} {}'.format(dataset_name, dataset_name, dataset_name, model, dataset_name))
                 print('{}:训练完成'.format(model))
                 name_2_acc[model] = open('./output/{}/{}/acc.txt'.format(dataset_name, model),'r').read()
-            if model == 'SVM':
-                print('SVM 模型未实现。')
+            if model == 'RandomForest':
+                print('开始训练: {}.'.format(model))
+                os.system('python ./RandomForest/main.py ./data/{}/train.csv ./data/{}/test.csv ./output/{}/{} {}'.format(
+                    dataset_name, dataset_name, dataset_name, model, dataset_name))
+                print('{}:训练完成'.format(model))
+                name_2_acc[model] = open('./output/{}/{}/acc.txt'.format(dataset_name, model), 'r').read()
         return name_2_acc
 
 
@@ -70,8 +74,13 @@ def predict():
                 print('{}:推理完成'.format(model))
                 with open('demo/result.txt', 'r', encoding='utf-8') as f:
                     name_2_label[model] = f.read().strip().split(',')
-            if model == 'SVM':
-                print('SVM 模型未实现。')
+            if model == 'RandomForest':
+                print('开始使用推理: {}.'.format(model))
+                os.system('python ./RandomForest/predict.py ./demo/temp.csv ./output/{}/{}/{}.pth ./demo/result.txt'.format(
+                    dataset_name, model, model))
+                print('{}:推理完成'.format(model))
+                with open('demo/result.txt', 'r', encoding='utf-8') as f:
+                    name_2_label[model] = f.read().strip().split(',')
         return name_2_label
 
 

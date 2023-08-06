@@ -32,8 +32,18 @@ EPOCHS = 1
 BATCH_SIZE = 2
 LEARNING_RATE = 1e-5
 # load github dataframe
-train_df = pd.read_csv(train, delimiter=";")
-test_df = pd.read_csv(test, delimiter=";")
+
+with open(train, 'r', encoding='utf-8') as f:
+    first_line = f.readline()
+if ';' in first_line:
+    train_df = pd.read_csv(train, delimiter=";")
+    test_df = pd.read_csv(test, delimiter=";")
+elif ',' in first_line:
+    train_df = pd.read_csv(train, delimiter=",")
+    test_df = pd.read_csv(test, delimiter=",")
+
+# train_df = pd.read_csv(train, delimiter=";")
+# test_df = pd.read_csv(test, delimiter=";")
 
 print(train_df.head())
 print(test_df.head())

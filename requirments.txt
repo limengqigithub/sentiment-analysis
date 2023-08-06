@@ -4,3 +4,4 @@ torch
 tqdm
 scikit-learn
 flask
+jieba
