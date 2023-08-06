@@ -21,7 +21,7 @@ test = sys.argv[2]
 output = sys.argv[3]
 dataset_name = sys.argv[4]
 # initialize roberta model
-cur_model = (RobertaForSequenceClassification, RobertaTokenizer, './roberta-base')
+cur_model = (RobertaForSequenceClassification, RobertaTokenizer, './RoBERTa/roberta-base')
 m_name = "Roberta"
 # CHANGE ME
 dataset = "stackoverflow"
@@ -68,7 +68,7 @@ label = list(set(labels))
 label_encoder = preprocessing.LabelEncoder()
 label_encoder.fit(label)
 labels = label_encoder.transform(labels)
-train_labels = torch.tensor(labels)
+train_labels = torch.tensor(labels, dtype=torch.long)
 
 print('Training data {} {} {}'.format(train_inputs.shape, train_masks.shape, train_labels.shape))
 
@@ -181,7 +181,7 @@ for sent in sentences:
 prediction_inputs = torch.cat(input_ids, dim=0)
 prediction_masks = torch.cat(attention_masks, dim=0)
 labels = label_encoder.transform(labels)
-prediction_labels = torch.tensor(labels)
+prediction_labels = torch.tensor(labels, dtype=torch.long)
 
 prediction_data = TensorDataset(prediction_inputs, prediction_masks, prediction_labels)
 prediction_sampler = SequentialSampler(prediction_data)

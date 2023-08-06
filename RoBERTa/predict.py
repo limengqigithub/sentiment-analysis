@@ -11,7 +11,7 @@ MAX_LEN = 128
 BATCH_SIZE = 2
 # ./temp.csv ./output/{}/{}/{}.pth ./result.txt
 test = sys.argv[1]
-cur_model = (RobertaForSequenceClassification, RobertaTokenizer, 'roberta-base')
+cur_model = (RobertaForSequenceClassification, RobertaTokenizer, './RoBERTa/roberta-base')
 model = cur_model[0].from_pretrained(cur_model[2], num_labels=3)
 if torch.cuda.is_available():
     model.cuda()
