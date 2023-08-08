@@ -1,21 +1,17 @@
 import os
 import sys
 import pandas as pd
-from transformers import RobertaTokenizer, RobertaForSequenceClassification
 import torch
 import jieba
-from torch.utils.data import TensorDataset, DataLoader, SequentialSampler
-import time
 import numpy as np
-from sklearn import metrics
 test = sys.argv[1]
-with open(test, 'r', encoding='utf-8') as f:
-    first_line = f.readline()
-if ';' in first_line:
-    test_df = pd.read_csv(test, delimiter=";")
-elif ',' in first_line:
-    test_df = pd.read_csv(test, delimiter=",")
-
+# with open(test, 'r', encoding='utf-8') as f:
+#     first_line = f.readline()
+# if ';' in first_line:
+#     test_df = pd.read_csv(test, delimiter=";")
+# elif ',' in first_line:
+#     test_df = pd.read_csv(test, delimiter=",")
+test_df = pd.read_csv(test, delimiter=";")
 # Load pretrained model for specific dataset
 model = torch.load(sys.argv[2]).get('model')
 label_encoder = torch.load(sys.argv[2]).get('label_encoder')

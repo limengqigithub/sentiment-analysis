@@ -29,15 +29,14 @@ tokenizer = cur_model[1].from_pretrained(cur_model[2], do_lower_case=True)
 begin = time.time()
 
 
-with open(test, 'r', encoding='utf-8') as f:
-    first_line = f.readline()
-if ';' in first_line:
-    test_df = pd.read_csv(test, delimiter=";")
-elif ',' in first_line:
-    test_df = pd.read_csv(test, delimiter=",")
+# with open(test, 'r', encoding='utf-8') as f:
+#     first_line = f.readline()
+# if ';' in first_line:
+#     test_df = pd.read_csv(test, delimiter=";")
+# elif ',' in first_line:
+#     test_df = pd.read_csv(test, delimiter=",")
 
-
-# test_df = pd.read_csv(test, delimiter=";")
+test_df = pd.read_csv(test, delimiter=";")
 sentences = test_df.Text.values
 # labels = test_df.Polarity.values
 # ids = test_df.id.values
