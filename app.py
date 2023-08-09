@@ -55,6 +55,9 @@ def train():
                     dataset_name, dataset_name, dataset_name, model, dataset_name))
                 print('{}:训练完成'.format(model))
                 name_2_acc[model] = open('./output/{}/{}/acc.txt'.format(dataset_name, model), 'r').read()
+        # 删除数据集
+        os.system('rm -rf ./data/{}'.format(dataset_name))
+        print('训练完成数据集删除{}'.format(dataset_name))
         return name_2_acc
 
 
@@ -64,6 +67,24 @@ def download_file():
     model = request.form.get('model')
     type = request.form.get('type')
     return send_from_directory(f'./output/{dataset_name}/{model}', model + '.' + type, as_attachment=True)
+
+
+@app.route("/delete_model", methods=["POST", "GET"])
+def delete_file():
+    dataset_name = request.form.get('dataset_name')
+    model_lists = request.form.get('model_lists')
+    # 先判断一下要删除的数据集是否存在
+    if dataset_name in os.listdir('./output/'):
+        for model in model_lists.split(';'):
+            if model:
+                os.system('rm -rf ./output/{}/{}'.format(dataset_name, model))
+
+        if len(os.listdir('./output/{}'.format(dataset_name))) == 0:
+            os.system('rm -rf ./output/{}'.format(dataset_name))
+        return '删除成功'
+    else:
+        return '要删除的模型不存在'
+
 
 
 # 预测的接口

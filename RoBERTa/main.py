@@ -28,7 +28,7 @@ dataset = "stackoverflow"
 splitnumber = "3"
 
 MAX_LEN = 128
-EPOCHS = 1
+EPOCHS = 3
 BATCH_SIZE = 2
 LEARNING_RATE = 1e-5
 # load github dataframe
