@@ -118,8 +118,15 @@ torch.save(save_dict, f'{output}/SVM.pth')
 
 predict_y = linearsvc.predict(test_sentences)
 
+def covert(flat_true_labels):
+    zeros = np.zeros(shape=(len(flat_true_labels),len(label_encoder.classes_)))
+    for i, v  in enumerate(flat_true_labels):
+        zeros[i][v] = 1
+    return zeros
+
+
 with open(f'{output}/SVM.txt', "w") as filer:
-    filer.write(metrics.classification_report(test_labels, predict_y))
+    filer.write(metrics.classification_report(covert(test_labels), covert(predict_y), target_names=label_encoder.classes_))
 
 with open(f'{output}/acc.txt', "w") as filer:
     filer.write(str(metrics.accuracy_score(test_labels, predict_y)))

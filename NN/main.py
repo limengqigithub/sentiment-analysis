@@ -182,10 +182,19 @@ flat_true_labels = [item for sublist in true_labels for item in sublist]
 
 
 print("Accuracy is: {}".format(metrics.accuracy_score(np.array(flat_true_labels), flat_predictions)))
+from report import Report
+# r = Report(flat_true_labels, flat_predictions)
+# print(r.print_report())
 
-print(metrics.classification_report(flat_true_labels, flat_predictions))
+def covert(flat_true_labels):
+    zeros = np.zeros(shape=(len(flat_true_labels),len(label_encoder.classes_)))
+    for i, v  in enumerate(flat_true_labels):
+        zeros[i][v] = 1
+    return zeros
+
+print(metrics.classification_report(y_true=covert(flat_true_labels), y_pred=covert(flat_predictions), target_names=label_encoder.classes_))
 with open(f'{output}/NN.txt', "w") as filer:
-    filer.write(metrics.classification_report(flat_true_labels, flat_predictions))
+    filer.write(metrics.classification_report(covert(flat_true_labels), covert(flat_predictions), target_names=label_encoder.classes_))
 
 with open(f'{output}/acc.txt', "w") as filer:
     filer.write(str(metrics.accuracy_score(flat_true_labels, flat_predictions)))

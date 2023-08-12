@@ -92,9 +92,15 @@ save_dict = {
 torch.save(save_dict, f'{output}/NaiveBayes.pth')
 
 predict_y = nb.predict(x_test_vect)
-
+label_names = list(set(train_labels))
+import numpy as np
+def covrt(data):
+    zeros = np.zeros(shape=(len(test_labels), len(label_names)))
+    for i, d in enumerate(data):
+        zeros[i][label_names.index(d)] = 1
+    return zeros
 with open(f'{output}/NaiveBayes.txt', "w") as filer:
-    filer.write(metrics.classification_report(test_labels, predict_y))
+    filer.write(metrics.classification_report(covrt(test_labels), covrt(predict_y), target_names=label_names))
 
 with open(f'{output}/acc.txt', "w") as filer:
     filer.write(str(metrics.accuracy_score(test_labels, predict_y)))

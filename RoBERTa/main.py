@@ -229,9 +229,15 @@ flat_true_labels = [item for sublist in true_labels for item in sublist]
 
 print("Accuracy of {} on {} is: {}".format(m_name, dataset, metrics.accuracy_score(flat_true_labels, flat_predictions)))
 
-print(metrics.classification_report(flat_true_labels, flat_predictions))
+def covert(flat_true_labels):
+    zeros = np.zeros(shape=(len(flat_true_labels),len(label_encoder.classes_)))
+    for i, v  in enumerate(flat_true_labels):
+        zeros[i][v] = 1
+    return zeros
+
+print(metrics.classification_report(covert(flat_true_labels), covert(flat_predictions), target_names=label_encoder.classes_))
 with open(f'{output}/RoBERTa.txt', "w") as filer:
-    filer.write(metrics.classification_report(flat_true_labels, flat_predictions))
+    filer.write(metrics.classification_report(covert(flat_true_labels), covert(flat_predictions), target_names=label_encoder.classes_))
 
 with open(f'{output}/acc.txt', "w") as filer:
     filer.write(str(metrics.accuracy_score(flat_true_labels, flat_predictions)))
