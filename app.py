@@ -62,6 +62,22 @@ def train():
                     dataset_name, dataset_name, dataset_name, model, dataset_name))
                 print('{}:训练完成'.format(model))
                 name_2_acc[model] = open('./output/{}/{}/acc.txt'.format(dataset_name, model), 'r').read()
+
+            if model == 'Senti4SD':
+                print('开始训练: {}.'.format(model))
+                path_train = './data/{}/train.csv'.format(dataset_name)
+                with open(path_train, 'r', encoding='utf-8') as f:
+                    first_line = f.readline()
+                if ';' in first_line:
+                    cmd = 'sh ./Senti4SD/train.sh -i ./data/{}/train.csv -i ./data/{}/test.csv -d sc -o ./output/{}/{}'.format(
+                    dataset_name, dataset_name, dataset_name, model)
+                elif ',' in first_line:
+                    cmd = 'sh ./Senti4SD/train.sh -i ./data/{}/train.csv -i ./data/{}/test.csv -d c -o ./output/{}/{}'.format(
+                        dataset_name, dataset_name, dataset_name, model)
+                # sh train.sh -i train.csv [-d csv_delimiter] [-g] [-c chunk-size] [-j jobs-number] [-o model-name]
+                os.system(cmd)
+                print('{}:训练完成'.format(model))
+                name_2_acc[model] = open('./output/{}/{}/acc.txt'.format(dataset_name, model), 'r').read()
         # 删除数据集
         os.system('rm -rf ./data/{}'.format(dataset_name))
         print('训练完成数据集删除{}'.format(dataset_name))
@@ -145,6 +161,19 @@ def predict():
                 print('{}:推理完成'.format(model))
                 with open('demo/result.txt', 'r', encoding='utf-8') as f:
                     name_2_label[model] = f.read().strip().split(',')
+
+            if model == 'Senti4SD':
+
+                # sh classification.sh -i dataset.csv [-d csv_delimiter] [-g] [-t] [-m model-name] [-c chunk-size] [-j jobs-number] [-o predictions.csv]
+                print('开始使用推理: {}.'.format(model))
+                cmd = 'sh ./Senti4SD/classification.sh -i ./demo/temp.csv -o predictions.csv -m ./output/{}/{}/{}.pth'
+                os.system(cmd)
+                print('{}:推理完成'.format(model))
+                with open('demo/result.txt', 'r', encoding='utf-8') as f:
+                    name_2_label[model] = f.read().strip().split(',')
+
+
+
         return name_2_label
 
 
